@@ -100,7 +100,7 @@ $timer = 0;
 $run = 1;
 
 
-while (getSysInfo(1)>=1 || $run)
+while (getSysInfo(1)>=1 && $run)
 {
 	logging($id, "main while cycle start", null, 8);
 	$E = logic_getInputs($id);
