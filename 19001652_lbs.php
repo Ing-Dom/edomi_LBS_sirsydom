@@ -1,26 +1,25 @@
 ###[DEF]###
 [name				= Counter2Changerate					]
 
-[e#1	important	= OnOff									]
-[e#2	important	= X										]
-[e#3	important	= Y										]
-[e#4	important	= Z										]
+[e#1	important	= Countervalue							]
+[e#2	important	= Scale				#init=1				]
+[e#3	important	= Min Intervall [s] #init=10			]
+[e#4	important	= Saved Countervalue					]
+[e#5	important	= Saved	Timestamp						]
 
-[e#10				= Loglevel 			#init=8				]
+[e#10				= Loglevel 			#init=3				]
 
 
 
 [a#1				= Changerate							]
-[a#2				= A										]
-[a#3				= B										]
+[a#2				= Countervalue							]
+[a#3				= Timestamp								]
 
 
-[v#100				= 0.01 ]
+[v#100				= 0.10 ]
 [v#101 				= 19001652 ]
 [v#102 				= Counter2Changerate ]
-[v#103 				= 0 ]
-[v#104 				= -1 ]
-[v#105 				= 0 ]
+[v#103 				= 8 ]
 
 ###[/DEF]###
 
@@ -28,13 +27,19 @@
 
 
 Inputs:
-E1 - abc:		bla
+E1 - Countervalue:			Connect this to a accumulating counter
+E2 - Scale:					Factor for the Changerate
+E3 - Min Intervall:			Minimal Intervall in seconds for calculating a rate
+E4 - Saved Countervalue:	Input for the previous Countervalue
+E5 - Saved Timestamp:		Input for the Timestamp to E4
 
 Outputs:
-A1 - abc:	bla
+A1 - Changerate:			Calculated Changerate
+A2 - Countervalue:			Output for the previous Countervalue
+A3 - Timestamp:				Output for the Timestamp to A2
 
 Versions:
-V0.01	2019-09-03	SirSydom
+V0.10	2019-09-04	SirSydom
 
 Open Issues:
 
@@ -47,7 +52,7 @@ Github:
 https://github.com/SirSydom/edomi_LBS_sirsydom
 
 Links:
-
+https://knx-user-forum.de/forum/projektforen/edomi/1400676-lbs-dev-aus-pulsen-z%C3%A4hlerst%C3%A4nden-in-%C3%A4nderungsrate-berechnen-s0-stromz%C3%A4hler
 
 
 Contributions:
@@ -61,48 +66,60 @@ Contributions:
 <?
 function LB_LBSID($id)
 {
+	logging($id, "LBS called", null, 8);
 	if($E=getLogicEingangDataAll($id))
 	{
+		logging($id, "getLogicEingangDataAll true", null, 8);
 		setLogicElementVar($id, 103, $E[10]['value']); //set loglevel to #VAR 103
 		
-		if($E[1]['value'] == 1 && $E[1]['refresh'] == 1)	// ON received
+		$min_intervall = 0;
+		if(is_numeric($E[3]['value']))
 		{
-			if($E[1]['refresh'] == 1)
-			{
-				// new value
-				$old_counter = getLogicElementVar($id,104);
-				$old_time = getLogicElementVar($id,105);
-				if($old_counter >= 0)
-				{
-					
-				}
-			}
+			$min_intervall = $E[3]['value'];
+		}
+		else
+		{
+			$min_intervall = 10;
+			logging($id, "Config Fault: E3 is invalid / not numeric. Using default value 10s", null, 3);
 		}
 		
-		
+		if($E[1]['value'] != NULL && $E[1]['refresh'] == 1)	// ON received
+		{
+			logging($id, "refresh 1 value != NULL", null, 8);
+			// new value
+			$old_counter = $E[4]['value'];
+			$old_time = $E[5]['value'];
+			
+			$new_counter = $E[1]['value'];
+			$result = gettimeofday();
+			$new_time = $result['sec']+$result['usec']/1000000.0;
+			
+			if($old_counter > 0)
+			{
+				logging($id, "old > 0 ($old_counter)", null, 8);
+				if($new_time - $old_time >= 10 && $new_counter - $old_counter > 0)
+				{
+					logging($id, "$new_time - $old_time >= 10", null, 8);
+					$changerate = ($new_counter - $old_counter) / ($new_time - $old_time);
+					logic_setOutput($id,1,$changerate * $E[2]['value']);
+					
+					logic_setOutput($id,2,$new_counter);
+					logic_setOutput($id,3,$new_time);
+				}
+			}
+			else
+			{
+				logging($id, "old <= 0 ($old_counter)", null, 8);
+				logic_setOutput($id,2,$new_counter);
+				logic_setOutput($id,3,$new_time);
+			}
+			
 
-
-
-		
+		}
 	}
-	
-	
-	/*
-	getLogicElementVar($id,1)
-	setLogicElementVar($id,1,1)
-	logic_setOutput($id,1,$mystate);
-	logging($id, "main while cycle end", null, 8);
-	*/
 }
 
 
-
-?>
-###[/LBS]###
-
-
-###[EXEC]###
-<?
 
 function myErrorHandler($errno, $errstr, $errfile, $errline)
 {
@@ -121,6 +138,7 @@ function error_on()
 	restore_error_handler();
 	error_reporting(E_ALL);
 }
+
 
 function logging($id,$msg, $var=NULL, $priority=8)
 {
@@ -145,6 +163,15 @@ function logging($id,$msg, $var=NULL, $priority=8)
 		}
 	}
 }
+
+?>
+###[/LBS]###
+
+
+###[EXEC]###
+<?
+
+
 
 
 ?>
