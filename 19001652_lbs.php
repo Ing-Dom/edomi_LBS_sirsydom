@@ -54,6 +54,7 @@ The changerate is only calculated and output when E1 - E4 > E3 which smoothes th
 
 
 Versions:
+V0.11	2019-09-15	SirSydom	fixed Bug with funtion names in LBS Section
 V0.10	2019-09-04	SirSydom
 
 Open Issues:
