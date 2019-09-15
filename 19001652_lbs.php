@@ -81,10 +81,10 @@ Contributions:
 <?
 function LB_LBSID($id)
 {
-	logging($id, "LBS called", null, 8);
+	LB_LBSID_logging($id, "LBS called", null, 8);
 	if($E=getLogicEingangDataAll($id))
 	{
-		logging($id, "getLogicEingangDataAll true", null, 8);
+		LB_LBSID_logging($id, "getLogicEingangDataAll true", null, 8);
 		setLogicElementVar($id, 103, $E[10]['value']); //set loglevel to #VAR 103
 		
 		$min_intervall = 0;
@@ -95,12 +95,12 @@ function LB_LBSID($id)
 		else
 		{
 			$min_intervall = 10;
-			logging($id, "Config Fault: E3 is invalid / not numeric. Using default value 10s", null, 3);
+			LB_LBSID_logging($id, "Config Fault: E3 is invalid / not numeric. Using default value 10s", null, 3);
 		}
 		
 		if($E[1]['value'] != NULL && $E[1]['refresh'] == 1)	// ON received
 		{
-			logging($id, "refresh 1 value != NULL", null, 8);
+			LB_LBSID_logging($id, "refresh 1 value != NULL", null, 8);
 			// new value
 			$old_counter = $E[4]['value'];
 			$old_time = $E[5]['value'];
@@ -111,10 +111,10 @@ function LB_LBSID($id)
 			
 			if($old_counter > 0)
 			{
-				logging($id, "old > 0 ($old_counter)", null, 8);
+				LB_LBSID_logging($id, "old > 0 ($old_counter)", null, 8);
 				if($new_time - $old_time >= 10 && $new_counter - $old_counter > 0)
 				{
-					logging($id, "$new_time - $old_time >= 10", null, 8);
+					LB_LBSID_logging($id, "$new_time - $old_time >= 10", null, 8);
 					$changerate = ($new_counter - $old_counter) / ($new_time - $old_time);
 					logic_setOutput($id,1,$changerate * $E[2]['value']);
 					
@@ -124,7 +124,7 @@ function LB_LBSID($id)
 			}
 			else
 			{
-				logging($id, "old <= 0 ($old_counter)", null, 8);
+				LB_LBSID_logging($id, "old <= 0 ($old_counter)", null, 8);
 				logic_setOutput($id,2,$new_counter);
 				logic_setOutput($id,3,$new_time);
 			}
@@ -136,26 +136,7 @@ function LB_LBSID($id)
 
 
 
-function myErrorHandler($errno, $errstr, $errfile, $errline)
-{
-	global $id;
-	logging($id, "File: $errfile | Error: $errno | Line: $errline | $errstr ");
-}
-
-function error_off()
-{
-	$error_handler = set_error_handler("myErrorHandler");
-	error_reporting(0);
-}
-
-function error_on()
-{
-	restore_error_handler();
-	error_reporting(E_ALL);
-}
-
-
-function logging($id,$msg, $var=NULL, $priority=8)
+function LB_LBSID_logging($id,$msg, $var=NULL, $priority=8)
 {
 	$E=getLogicEingangDataAll($id);
 	$logLevel = getLogicElementVar($id,103);
