@@ -16,7 +16,7 @@
 [a#3				= Timestamp								]
 
 
-[v#100				= 0.10 ]
+[v#100				= 0.11 ]
 [v#101 				= 19001652 ]
 [v#102 				= Counter2Changerate ]
 [v#103 				= 8 ]
@@ -54,7 +54,7 @@ The changerate is only calculated and output when E1 - E4 > E3 which smoothes th
 
 
 Versions:
-V0.11	2019-09-15	SirSydom	fixed Bug with funtion names in LBS Section
+V0.11	2019-09-17	SirSydom	fixed Bug with funtion names in LBS Section
 V0.10	2019-09-04	SirSydom
 
 Open Issues:
@@ -65,7 +65,7 @@ SirSydom - com@sirsydom.de
 Copyright (c) 2019 SirSydom
 
 Github:
-https://github.com/SirSydom/edomi_LBS_sirsydom Tag: 19001652_V0.10
+https://github.com/SirSydom/edomi_LBS_sirsydom Tag: 19001652_V0.11
 
 Links:
 https://knx-user-forum.de/forum/projektforen/edomi/1400676-lbs-dev-aus-pulsen-z%C3%A4hlerst%C3%A4nden-in-%C3%A4nderungsrate-berechnen-s0-stromz%C3%A4hler
