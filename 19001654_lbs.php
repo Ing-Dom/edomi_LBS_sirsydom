@@ -63,8 +63,11 @@ function LB_LBSID($id)
 			$archivDb='archivKoData';
 			$archivId=$E[3]['value'];
 			$value = $E[1]['value'];
+			$timestamp = $E[2]['value'];
 			
-			$query = "INSERT INTO `archivKoData` (`datetime`, `ms`, `targetid`, `gavalue`) VALUES ('" . . "', '" . ."', '" . strVal($archivId) . "', '" . $value . "')";
+			if(
+			
+			$query = "INSERT INTO `archivKoData` (`datetime`, `ms`, `targetid`, `gavalue`) VALUES (FROM_UNIXTIME(" . . "), '" . ."', '" . strVal($archivId) . "', '" . $value . "')";
 
 
 			//$con = mysql_connect("localhost","root","");
