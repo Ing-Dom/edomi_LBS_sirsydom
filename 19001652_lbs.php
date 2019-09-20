@@ -14,9 +14,10 @@
 [a#1				= Changerate							]
 [a#2				= Countervalue							]
 [a#3				= Timestamp								]
+[a#4				= Old Timestamp							]
 
 
-[v#100				= 0.11 ]
+[v#100				= 0.20 ]
 [v#101 				= 19001652 ]
 [v#102 				= Counter2Changerate ]
 [v#103 				= 8 ]
@@ -35,6 +36,7 @@ Outputs:
 A1 - Changerate:			Calculated Changerate
 A2 - Countervalue:			Output for the previous Countervalue
 A3 - Timestamp:				Output for the Timestamp to A2
+A4 - Old Timestamp:			Output the Timestamp which represents the start of the measurement
 
 This LBS calculates a change rate based on counter values.
 Assumed "something" is counted (regardless the unit) the resulting change rate is unit per second.
@@ -51,9 +53,12 @@ A2 and A3 should be used to set a remanent KO which is feed back to E4 and E5.
 When the countervalues increases very fast like > 1Hz the jitter of the edomi time and calculating time result in jittering changerates.
 The changerate is only calculated and output when E1 - E4 > E3 which smoothes the jitter of the time.
 
+At A4 the old Timestamp is preserved for datalogging purposes. The changerate at A1 was measured from A4 up to "now" (=A3).
+
 
 
 Versions:
+V0.20	2019-09-20	SirSydom	added A4
 V0.11	2019-09-17	SirSydom	fixed Bug with funtion names in LBS Section
 V0.10	2019-09-04	SirSydom
 
@@ -65,7 +70,7 @@ SirSydom - com@sirsydom.de
 Copyright (c) 2019 SirSydom
 
 Github:
-https://github.com/SirSydom/edomi_LBS_sirsydom Tag: 19001652_V0.11
+https://github.com/SirSydom/edomi_LBS_sirsydom/releases/tag/19001652_V0.20
 
 Links:
 https://knx-user-forum.de/forum/projektforen/edomi/1400676-lbs-dev-aus-pulsen-z%C3%A4hlerst%C3%A4nden-in-%C3%A4nderungsrate-berechnen-s0-stromz%C3%A4hler
@@ -121,6 +126,7 @@ function LB_LBSID($id)
 					
 					logic_setOutput($id,2,$new_counter);
 					logic_setOutput($id,3,$new_time);
+					logic_setOutput($id,4,$old_time);
 				}
 			}
 			else
@@ -128,6 +134,7 @@ function LB_LBSID($id)
 				LB_LBSID_logging($id, "old <= 0 ($old_counter)", null, 8);
 				logic_setOutput($id,2,$new_counter);
 				logic_setOutput($id,3,$new_time);
+				logic_setOutput($id,4,$old_time);
 			}
 			
 
