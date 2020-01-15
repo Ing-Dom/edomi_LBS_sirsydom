@@ -396,9 +396,10 @@ function km200_SetData( $REST_URL, $Value )
   global $id, $curl_errno;
 
   if (is_numeric($Value))
-	  $Value = intval($Value);
+	  $Value = get_numeric($Value);
   
   $content = json_encode(array("value" => $Value));
+  logging($id, 'JSON CONTENT: ' . $content, NULL, 8);
   $content_encrypted = km200_Encrypt($content);
   
   $ch = curl_init();
