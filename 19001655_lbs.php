@@ -1,5 +1,5 @@
 ###[DEF]###
-[name =Archive: Analyze temperature data ]
+[name =Archive: Analyze temperature data LBS1655 V0.11]
 
 [e#1 =Trigger ]
 [e#2 =Start ]
@@ -15,8 +15,8 @@
 [a#7 =End of period ]
 [a#8 =Error ]
 
-[v#100				= 0.10 ]
-[v#101 				= 19001626 ]
+[v#100				= 0.11 ]
+[v#101 				= 19001655 ]
 [v#102 				= Archive: Analyze temperature data ]
 ###[/DEF]###
 
@@ -46,13 +46,15 @@ A8 - Error: 1 means Error has occured
 
 Versions:
 V0.10	2019-03-07	SirSydom		initial version
+V0.11	2020-01-08	SirSydom		renamed to 1655
+V0.12	2020-01-15	SirSydom		removed logging functions
 
 Open Issues:
 
 
 Author:
 SirSydom - com@sirsydom.de
-Copyright (c) 2019 SirSydom
+Copyright (c) 2019-2020 SirSydom
 
 Github:
 
@@ -148,7 +150,7 @@ function LB_LBSID($id)
 			}
 			else
 			{
-				writeToCustomLog(0,true,'Error db access');
+				//writeToCustomLog(0,true,'Error db access');
 			}
 
 			foreach ($mydata as $key => $value)
@@ -176,7 +178,7 @@ function LB_LBSID($id)
 			if ($error)
 			{
 				logic_setOutput($id,6,1);
-				writeToCustomLog(0,true,'No data availible');
+				//writeToCustomLog(0,true,'No data availible');
 			}
 			else
 			{
@@ -189,48 +191,6 @@ function LB_LBSID($id)
 				logic_setOutput($id,7,$max_datetime);
 
 			}
-		}
-	}
-}
-
-function myErrorHandler($errno, $errstr, $errfile, $errline)
-{
-	global $id;
-	logging($id, "File: $errfile | Error: $errno | Line: $errline | $errstr ");
-}
-
-function error_off()
-{
-	$error_handler = set_error_handler("myErrorHandler");
-	error_reporting(0);
-}
-
-function error_on()
-{
-	restore_error_handler();
-	error_reporting(E_ALL);
-}
-
-function logging($id,$msg, $var=NULL, $priority=8)
-{
-	$E=getLogicEingangDataAll($id);
-	$logLevel = getLogicElementVar($id,103);
-	if (is_int($priority) && $priority<=$logLevel && $priority>0)
-	{
-		$logLevelNames = array('none','emerg','alert','crit','err','warning','notice','info','debug');
-		$version = getLogicElementVar($id,100);
-		$lbsNo = getLogicElementVar($id,101);
-		$logName = getLogicElementVar($id,102) . ' --- LBS'.$lbsNo;
-		strpos($_SERVER['SCRIPT_NAME'],$lbsNo) ? $scriptname='EXE'.$lbsNo : $scriptname = 'LBS'.$lbsNo;
-		writeToCustomLog($logName,str_pad($logLevelNames[$logLevel],7), $scriptname." [v$version]:\t".$msg);
-		
-		if (is_object($var)) $var = get_object_vars($var); // transfer object into array
-		if (is_array($var)) // print out array
-		{
-			writeToCustomLog($logName,str_pad($logLevelNames[$logLevel],7), $scriptname." [v$version]:\t================ ARRAY/OBJECT START ================");
-			foreach ($var as $index => $line)
-				writeToCustomLog($logName,str_pad($logLevelNames[$logLevel],7), $scriptname." [v$version]:\t".$index." => ".$line);
-			writeToCustomLog($logName,str_pad($logLevelNames[$logLevel],7), $scriptname." [v$version]:\t================ ARRAY/OBJECT END ================");
 		}
 	}
 }
