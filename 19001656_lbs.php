@@ -1,5 +1,5 @@
 ###[DEF]###
-[name =Archive: Analyze Period LBS1656 V0.01]
+[name =Archive: Analyze Period LBS1656 V0.02]
 
 [e#1 =Trigger ]
 [e#2 =Start ]
@@ -16,7 +16,7 @@
 [a#7 =End of period ]
 [a#8 =Error ]
 
-[v#100				= 0.01 ]
+[v#100				= 0.02 ]
 [v#101 				= 19001656 ]
 [v#102 				= Archive: Advanced Query ]
 ###[/DEF]###
@@ -48,6 +48,7 @@ A8 - Error
 
 Versions:
 V0.01	2020-01-15	SirSydom		initial version
+V0.01	2020-01-16	SirSydom		fixed periodstr
 
 
 Open Issues:
@@ -79,6 +80,7 @@ function LB_LBSID($id)
 			$period = $E[4]['value'];
 			$timestartstr = '';
 			$timeendstr = '';
+			$periodstr = '';
 			$error=true;
 			$query='';
 			$mydata = array();
