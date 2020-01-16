@@ -1,5 +1,5 @@
 ###[DEF]###
-[name =Archive: Analyze Period LBS1656 V0.02]
+[name =Archive: Analyze Period LBS1656 V0.03]
 
 [e#1 =Trigger ]
 [e#2 =Start ]
@@ -16,7 +16,7 @@
 [a#7 =End of period ]
 [a#8 =Error ]
 
-[v#100				= 0.02 ]
+[v#100				= 0.03 ]
 [v#101 				= 19001656 ]
 [v#102 				= Archive: Advanced Query ]
 ###[/DEF]###
@@ -31,8 +31,8 @@ The value is weighted with the time until the next records occures.
 
 Inputs:
 E1 - Trigger: LBS will be executed only when a new telegram = 1 arrives
-E2 - Start: a custom start date/time can be specified here. NULL: no restriction regarding time
-E3 - End: a custom end date/time can be specified here. NULL: no restriction regarding time
+E2 - Start: a custom start date/time can be specified here. (>= E2) NULL: no restriction regarding time
+E3 - End: a custom end date/time can be specified here. (< E3) NULL: no restriction regarding time
 E4 - Period: A year (e.g. 2020), a month (e.g. 2020-01) or a day (e.g. 2020-01-08) can be specified. NULL: no restriction regarding time
 E5 - ArchiveID: the data archive id from edomi NULL: no Archive ID will be used
 
@@ -48,7 +48,8 @@ A8 - Error
 
 Versions:
 V0.01	2020-01-15	SirSydom		initial version
-V0.01	2020-01-16	SirSydom		fixed periodstr
+V0.02	2020-01-16	SirSydom		fixed periodstr
+V0.03	2020-01-16	SirSydom		changed E3 from <= to <
 
 
 Open Issues:
@@ -124,7 +125,7 @@ function LB_LBSID($id)
 				
 				if($E[3]['value'] != NULL)
 				{
-					$timeendstr = "datetime <= '".$E[3]['value']."' AND ";
+					$timeendstr = "datetime < '".$E[3]['value']."' AND ";
 				}
 			}
 			

@@ -205,7 +205,7 @@ class LB_LBSID_EvalMath {
                                // and determining when a - is a negation
     
         if (preg_match('/[^\%\w\s+*^\/()\.,-]/', $expr, $matches)) { // make sure the characters are all good
-            return $this->trigger("illegal character '{$matches[0]}'");
+            return $this->trigger("illegal character '{$matches[0]}' in '{$expr}'");
         }
     
         while(1) { // 1 Infinite Loop ;)
