@@ -1,5 +1,5 @@
 ###[DEF]###
-[name=SmlReader v1.4]
+[name=SmlReader v1.6]
 
 [e#1=obis1]
 [e#2=obis2]
@@ -25,7 +25,7 @@
 ###[/DEF]###
 
 ###[HELP]###
-SmlReader V1.4
+SmlReader V1.6
 
 Dieser LBS verarbeitet SML-kodierte Binärdaten von elektronischen Haushaltszählern (eHZ)
 mit einer optischen Schnittstelle. eHZ mit der Datenausgabe im Klartext werden nicht
@@ -72,6 +72,12 @@ eHZ-Daten, die der OBIS-Kennzahl am Eingang mit dem gleichen Index entsprechen.
 
 Versionen
 =========
+1.6 (SirSydom <com@sirsydom.de> 2020-03-01
+- -icrnl -inlcr hinzugefügt
+
+1.5 (SirSydom <com@sirsydom.de> 2020-02-22
+- ocrnl hinzugefügt
+
 1.4 (SirSydom <com@sirsydom.de>
 - Wartezeiten und Retries verändert, um den Aufbau einer Queue im Serial Stream zu vermeiden (führt zu Delays bei den gelieferten Werten bis hin zu Minuten)
 
@@ -425,7 +431,7 @@ class SmlReader {
 
         // set the baudrate
         // without additional packages this is the only method to control the tty device
-        system("stty -F {$this->serialPort} {$this->baudrate} cs8 ignbrk -brkint -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts > /dev/nulli 2>&1");
+        system("stty -F {$this->serialPort} {$this->baudrate} cs8 ignbrk -brkint -imaxbel -opost -onlcr -ocrnl -icrnl -inlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts > /dev/nulli 2>&1");
 
         // open the port and set it to non-blocking
         $this->serialFd = fopen($this->serialPort, "rb");
