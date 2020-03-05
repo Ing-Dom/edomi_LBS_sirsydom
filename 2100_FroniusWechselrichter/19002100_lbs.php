@@ -58,7 +58,7 @@
 
 ###[HELP]###
 This LBS polls data from a Fronius Inverter over Modbus TCP.
-It is tested with a Fronius Symo 7.0.0-3M but should work for all Primo and Symo modells.
+It is tested with a Fronius Symo 7.0.0-3M but should work for all Primo and Symo models.
 
 INSTALLATION:
 This LBS requires phpmodbus.php to be present on Edomi.
@@ -68,6 +68,7 @@ download phpModbus yourself. Be carefull and compare for differences!
 USAGE:
 The LBS can work manually triggerd, the request is done once at trigger.
 With E7 Loop = 1 the LBS will continously poll the data, the frequency can be adjusted by E8 Delay in milliseconds.
+With Loop = 1, Trigger is ignored.
 
 You should set following option in the inverter settings for 'MODBUS' (at the webinterface):
 TCP / 502 / String Control Offset 101 / Sunspec Model float / no Demo
@@ -75,7 +76,6 @@ TCP / 502 / String Control Offset 101 / Sunspec Model float / no Demo
 
 
 Outputs:
-
 Current is in A, Voltage in V, Power in W and Energy in Wh.
 
 (Vendor) Operating State:
@@ -246,7 +246,10 @@ https://github.com/SirSydom/edomi_LBS_sirsydom
 
 
 Links:
-with credits to LBS 1030 V0.6 by Michael Pattison
+https://knx-user-forum.de/forum/projektforen/edomi/1477233-lbs19002100-froniusinverter-modbus
+
+
+with credits to LBS 19001030 V0.6 by Michael Pattison
 
 
 
