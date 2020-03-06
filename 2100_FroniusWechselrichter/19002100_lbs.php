@@ -1,5 +1,5 @@
 ###[DEF]###
-[name		= FroniusInverter LBS2100 V0.10	]
+[name		= FroniusInverter LBS2100 V0.11	]
 
 [e#1 trigger= 		Trigger]
 [e#2 important= 	Host] ModBus Slave IP or Hostname
@@ -49,7 +49,7 @@
 [v#1             = 0 ]
 [v#2             = 0 ]
 [v#5             = 0 ]
-[v#100           = V0.10 ]
+[v#100           = V0.11 ]
 [v#101           = 19002100 ]
 [v#102           = FroniusInverter LBS2100]
 [v#103           = 0 ]
@@ -228,6 +228,7 @@ StateCode:
 
 
 Versions:
+V0.11	2020-03-06	SirSydom		fixed bug with scale factors beeing null, improved debugging
 V0.10	2020-03-04	SirSydom		first release version
 V0.01	2020-02-11	SirSydom		initial version
 
@@ -427,12 +428,12 @@ function ExtractUInt16Data($array, $offset)
 		return $value;
 }
 
-function ExtractInt16Data($array, $offset)
+function ExtractSunSSFData($array, $offset)
 {
 	$temp_array[0] = $array[$offset+0];
 	$temp_array[1] = $array[$offset+1];
 	
-	if($temp_array[0] == 0xFF && $temp_array[1] == 0xFF)
+	if($temp_array[0] == 0x80 && $temp_array[1] == 0x00)
 		return null;
 	else
 		return PhpType::bytes2signedInt($temp_array, 0);
@@ -540,109 +541,109 @@ if($E=getLogicEingangDataAll($id))
 		
 		// AC Phase-A Current value 40074
 		$ret = ExtractFloatData($recData, (40074-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Phase-A Current:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,2,round($ret,3));
 		
 		// AC Phase-B Current value 40076
 		$ret = ExtractFloatData($recData, (40076-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Phase-B Current:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,3,round($ret,3));
 		
 		// AC Phase-C Current value 40078
 		$ret = ExtractFloatData($recData, (40078-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Phase-C Current:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,4,round($ret,3));
 		
 		// AC Voltage Phase-AB value 40080
 		$ret = ExtractFloatData($recData, (40080-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Voltage Phase-AB:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,5,round($ret,2));
 		
 		// AC Voltage Phase-BC value 40082
 		$ret = ExtractFloatData($recData, (40082-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Voltage Phase-BC:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,6,round($ret,2));
 		
 		// AC Voltage Phase-CA value 40084
 		$ret = ExtractFloatData($recData, (40084-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Voltage Phase-CA:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,7,round($ret,2));
 		
 		// L1 Voltage 40086
 		$ret = ExtractFloatData($recData, (40086-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"L1 Voltage:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,8,round($ret,2));
 		
 		// L2 Voltage 40088
 		$ret = ExtractFloatData($recData, (40088-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"L2 Voltage:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,9,round($ret,2));
 		
 		// L3 Voltage 40090
 		$ret = ExtractFloatData($recData, (40090-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"L3 Voltage:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,10,round($ret,2));
 		
 		// AC Power value 40092
 		$ret = ExtractFloatData($recData, (40092-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Power:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,11,round($ret,1));
 		
 		// AC Frequency value 40094
 		$ret = ExtractFloatData($recData, (40094-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Frequency:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,12,round($ret,3));
 		
 		// Apparent Power 40096
 		$ret = ExtractFloatData($recData, (40096-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"Apparent Power:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,13,round($ret,1));
 		
 		// Reactive Power 40098
 		$ret = ExtractFloatData($recData, (40098-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"Reactive Power:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,14,round($ret,1));
 		
 		// Power Factor 40100
 		$ret = ExtractFloatData($recData, (40100-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"Power Factor:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,15,round($ret,3));
 		
 		// AC Lifetime Energy production 40102
 		$ret = ExtractFloatData($recData, (40102-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"AC Lifetime Energy:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,16,round($ret,0));
 		
 		// DC Current value 400104
 		$ret = ExtractFloatData($recData, (40104-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"DC Current:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,19,round($ret,3));
 		
 		// DC Voltage value 40106
 		$ret = ExtractFloatData($recData, (40106-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"DC Voltage:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,20,round($ret,1));
 		
 		// DC Power value 40108
 		$ret = ExtractFloatData($recData, (40108-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"DC Power:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,21,round($ret,1));
 		
@@ -653,7 +654,7 @@ if($E=getLogicEingangDataAll($id))
 		
 		// Vendor Defined Operating State 40119
 		$ret = ExtractUInt16Data($recData, (40119-40070)*2);
-		logging($id,"Data:" . $ret);
+		logging($id,"Vendor Defined Operating State:" . $ret);
 		if(is_numeric($ret) && !is_nan($ret))
 			setLogicLinkAusgang($id,22,$ret);
 		
@@ -741,19 +742,19 @@ if($E=getLogicEingangDataAll($id))
 		
 		// Total energy for current day of all connected inverters. 502
 		$day_wh = ExtractUInt64Data($recData, 0);
-		logging($id,"Data:" . $day_wh);
+		logging($id,"Total energy for current day of all connected inverters:" . $day_wh);
 		if(is_numeric($day_wh) && !is_nan($day_wh))		
 			setLogicLinkAusgang($id,17, $day_wh);
 		
 		// Total energy for last year of all connected inverters. 506
 		$year_wh = ExtractUInt64Data($recData, 8);
-		logging($id,"Data:" . $year_wh);	
+		logging($id,"Total energy for last year of all connected inverters:" . $year_wh);	
 		if(is_numeric($year_wh) && !is_nan($year_wh))			
 			setLogicLinkAusgang($id,18, $year_wh);
 		
-		//Total energy of all connected inverters. 510
+		// Total energy of all connected inverters. 510
 		$total_wh = ExtractUInt64Data($recData, 16);
-		logging($id,"Data:" . $total_wh);
+		logging($id,"Total energy of all connected inverters:" . $total_wh);
 		//if(is_numeric($total_wh) && !is_nan($total_wh))			
 		//	setLogicLinkAusgang($id,???, $total_wh);
 	}
@@ -796,70 +797,70 @@ if($E=getLogicEingangDataAll($id))
 		logging($id,"Raw Data:",$recData);
 		
 		// Current Scale Factor 40266
-		$dca_sf = ExtractInt16Data($recData, (40266-40264)*2);
-		logging($id,"Data:" . $dca_sf);
+		$dca_sf = ExtractSunSSFData($recData, (40266-40264)*2);
+		logging($id,"Current Scale Factor:" . $dca_sf);
 		
 		// Voltage Scale Factor 40267
-		$dcv_sf = ExtractInt16Data($recData, (40267-40264)*2);
-		logging($id,"Data:" . $dcv_sf);
+		$dcv_sf = ExtractSunSSFData($recData, (40267-40264)*2);
+		logging($id,"Voltage Scale Factor:" . $dcv_sf);
 		
 		// Power Scale Factor 40268
-		$dcw_sf = ExtractInt16Data($recData, (40268-40264)*2);
-		logging($id,"Data:" . $dcw_sf);
+		$dcw_sf = ExtractSunSSFData($recData, (40268-40264)*2);
+		logging($id,"Power Scale Factor:" . $dcw_sf);
 		
 		// Energy Scale Factor 40269
-		$dcwh_sf = ExtractInt16Data($recData, (40269-40264)*2);
-		logging($id,"Data:" . $dcwh_sf);
+		$dcwh_sf = ExtractSunSSFData($recData, (40269-40264)*2);
+		logging($id,"Energy Scale Factor:" . $dcwh_sf);
 		
 		
 		// DC Current 40283
 		$dca_1 = ExtractUInt16Data($recData, (40283-40264)*2);
-		logging($id,"Data:" . $dca_1);
+		logging($id,"DC Current:" . $dca_1);
 		
 		// DC Voltage 40284
 		$dcv_1 = ExtractUInt16Data($recData, (40284-40264)*2);
-		logging($id,"Data:" . $dcv_1);
+		logging($id,"DC Voltage:" . $dcv_1);
 		
 		// DC Power 40285
 		$dcw_1 = ExtractUInt16Data($recData, (40285-40264)*2);
-		logging($id,"Data:" . $dcw_1);
+		logging($id,"DC Power:" . $dcw_1);
 		
 		// DC Energy 40286
 		$dcwh_1 = ExtractAcc32Data($recData, (40286-40264)*2);
-		logging($id,"Data:" . $dcwh_1);
+		logging($id,"DC Energy:" . $dcwh_1);
 		
 		// Operating State 40291
 		$dcst_1 = ExtractUInt16Data($recData, (40291-40264)*2);
-		logging($id,"Data:" . $dcst_1);
+		logging($id,"Operating State:" . $dcst_1);
 		
 		// Module Events 40292
 		$dcevt_1 = ExtractUInt32Data($recData, (40292-40264)*2);
-		logging($id,"Data:" . $dcevt_1);
+		logging($id,"Module Events:" . $dcevt_1);
 		
 		
 		// DC Current 40303
 		$dca_2 = ExtractUInt16Data($recData, (40303-40264)*2);
-		logging($id,"Data:" . $dca_2);
+		logging($id,"DC Current:" . $dca_2);
 		
 		// DC Voltage 40304
 		$dcv_2 = ExtractUInt16Data($recData, (40304-40264)*2);
-		logging($id,"DC Voltage 40304:" . $dcv_2);
+		logging($id,"DC Voltage:" . $dcv_2);
 		
 		// DC Power 40305
 		$dcw_2 = ExtractUInt16Data($recData, (40305-40264)*2);
-		logging($id,"DC Power 40305:" . $dcw_2);
+		logging($id,"DC Power:" . $dcw_2);
 		
 		// DC Energy 40306
 		$dcwh_2 = ExtractAcc32Data($recData, (40306-40264)*2);
-		logging($id,"DC Energy 40306:" . $dcwh_2);
+		logging($id,"DC Energy:" . $dcwh_2);
 		
 		// Operating State 40311
 		$dcst_2 = ExtractUInt16Data($recData, (40311-40264)*2);
-		logging($id,"Operating State 40311:" . $dcst_1);
+		logging($id,"Operating State:" . $dcst_1);
 		
 		// Module Events 40312
 		$dcevt_2 = ExtractUInt32Data($recData, (40312-40264)*2);
-		logging($id,"Module Events 40312:" . $dcevt_1);
+		logging($id,"Module Events:" . $dcevt_1);
 		
 		if(is_numeric($dca_1) && is_numeric($dca_sf))
 			setLogicLinkAusgang($id,24, $dca_1 *  pow(10,$dca_sf));
