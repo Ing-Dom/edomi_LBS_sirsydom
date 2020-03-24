@@ -1,5 +1,5 @@
 ###[DEF]###
-[name		= FroniusInverter LBS2100 V0.11	]
+[name		= FroniusInverter LBS2100 V0.12	]
 
 [e#1 trigger= 		Trigger]
 [e#2 important= 	Host] ModBus Slave IP or Hostname
@@ -49,7 +49,7 @@
 [v#1             = 0 ]
 [v#2             = 0 ]
 [v#5             = 0 ]
-[v#100           = V0.11 ]
+[v#100           = V0.12 ]
 [v#101           = 19002100 ]
 [v#102           = FroniusInverter LBS2100]
 [v#103           = 0 ]
@@ -228,6 +228,7 @@ StateCode:
 
 
 Versions:
+V0.12	2020-03-24	SirSydom		fixed bug with using recData from old requests when not receiving data
 V0.11	2020-03-06	SirSydom		fixed bug with scale factors beeing null, improved debugging
 V0.10	2020-03-04	SirSydom		first release version
 V0.01	2020-02-11	SirSydom		initial version
@@ -502,6 +503,7 @@ if($E=getLogicEingangDataAll($id))
 	{
 		set_error_handler("myErrorHandlerModBus");
 		$suppressModBusError='0';
+		$recData = false;
 		$recData = $modbus->readMultipleRegisters($E[5]['value'], 40069, 62);	//  SunSpec Inverter Float Modbus Map
 		restore_error_handler();
 	}
@@ -665,6 +667,7 @@ if($E=getLogicEingangDataAll($id))
 	{
 		set_error_handler("myErrorHandlerModBus");
 		$suppressModBusError='0';
+		$recData = false;
 		$recData = $modbus->readMultipleRegisters($E[5]['value'], 213, 1);	//  SunSpec 
 		restore_error_handler();
 	}
@@ -709,6 +712,7 @@ if($E=getLogicEingangDataAll($id))
 	{
 		set_error_handler("myErrorHandlerModBus");
 		$suppressModBusError='0';
+		$recData = false;
 		$recData = $modbus->readMultipleRegisters($E[5]['value'], 501, 12);	//  SunSpec 
 		restore_error_handler();
 	}
@@ -765,6 +769,7 @@ if($E=getLogicEingangDataAll($id))
 	{
 		set_error_handler("myErrorHandlerModBus");
 		$suppressModBusError='0';
+		$recData = false;
 		$recData = $modbus->readMultipleRegisters($E[5]['value'], 40263, 50);	//  SunSpec Multiple MPPT Inverter Extension Model Mode
 		restore_error_handler();
 	}
