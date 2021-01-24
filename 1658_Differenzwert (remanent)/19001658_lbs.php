@@ -1,8 +1,8 @@
 ###[DEF]###
-[name		=Differenzwert (remanent) LBS 1658 V0.01	]
+[name		=Differenzwert (remanent) LBS 1658 V0.02	]
 
-[e#1 TRIGGER=Trigger/Stop #init=0		]
-[e#2		=Messwert				]
+[e#1 TRIGGER=Trigger/Stop #init=INIT		]
+[e#2		=Messwert #init=INIT			]
 
 [a#1		=&Delta;Wert					]
 [a#2		=&Delta;Zeit					]
@@ -35,8 +35,8 @@ Achtung:
 Eine Aktualisierung von A1 und A2 erfolgt nur beim Starten und Stoppen einer Messung und bei eintreffenden Telegrammen an E2 während einer Messung. Es erfolgt <i>keine</i> zyklische Änderung von A1 und A2!
  
  
-E1: Starten (&ne;0) bzw. Stoppen (=0) einer Messung
-E2: Messwert (nummerisch), dessen Differenz berechnet werden soll (z.B. ein Zählerstand)
+E1: Starten (&ne;0) bzw. Stoppen (=0) einer Messung (Achtung: um unerwünschte Effekte bei der Initialisierung zu unterbinden, sollte E1 mit 'INIT' initialisiert werden(default))
+E2: Messwert (nummerisch), dessen Differenz berechnet werden soll (z.B. ein Zählerstand) (Achtung: um unerwünschte Effekte bei der Initialisierung zu unterbinden, sollte E2 mit 'INIT' initialisiert werden(default))
 A1: Messwert-Differenz (nummerisch): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Wertdifferenz, beim Beenden der Messung erfolgt keine Änderung
 A2: Zeitdifferenz (Sekunden, FLOAT): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Zeitdifferenz, beim Beenden der Messung auf die gesamte Zeitdifferenz der Messung
 A3: Letzter Differenzwert beim Stoppen oder Neustarten einer Messung (z.B. zur Archivierung)
@@ -45,19 +45,19 @@ A3: Letzter Differenzwert beim Stoppen oder Neustarten einer Messung (z.B. zur A
 
 ###[LBS]###
 <?
-function LB_LBSID($id) {
-
+function LB_LBSID($id)
+{
 	if (($E=logic_getInputs($id)) && ($V=logic_getVars($id))) {
 
 		//Differenzen ausgeben
-		if (!isEmpty($V[2]) && $E[2]['refresh']==1) {
+		if (!isEmpty($V[2]) && $E[2]['refresh']==1 && $E[2]['value']!=='INIT' ) {
 			logic_setOutput($id,1,$E[2]['value']-$V[1]);
 			logic_setOutput($id,2,getMicrotime()-$V[2]);
 		}
 
 		if ($E[1]['refresh']==1)
 		{	// neues trigger telegram
-			if ($E[1]['value']==0)
+			if ($E[1]['value']==0 && $E[1]['value']!=='INIT')
 			{	//Stop
 				if (!isEmpty($V[2]))
 				{
@@ -70,7 +70,7 @@ function LB_LBSID($id) {
 					//### ignorieren bzw. resetten
 				}
 			}
-			else
+			else if ($E[1]['value']==1)
 			{
 				//Start
 				// variablen schreiben, ausgänge neu setzen
