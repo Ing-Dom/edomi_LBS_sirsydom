@@ -1,8 +1,9 @@
 ###[DEF]###
-[name		=Differenzwert (remanent) LBS 1658 V0.02	]
+[name		=Differenzwert (remanent) LBS 1658 V0.03	]
 
 [e#1 TRIGGER=Trigger/Stop #init=INIT		]
 [e#2		=Messwert #init=INIT			]
+[e#3		=Messwertkorrektur #init=INIT			]
 
 [a#1		=&Delta;Wert					]
 [a#2		=&Delta;Zeit					]
@@ -37,6 +38,7 @@ Eine Aktualisierung von A1 und A2 erfolgt nur beim Starten und Stoppen einer Mes
  
 E1: Starten (&ne;0) bzw. Stoppen (=0) einer Messung (Achtung: um unerwünschte Effekte bei der Initialisierung zu unterbinden, sollte E1 mit 'INIT' initialisiert werden(default))
 E2: Messwert (nummerisch), dessen Differenz berechnet werden soll (z.B. ein Zählerstand) (Achtung: um unerwünschte Effekte bei der Initialisierung zu unterbinden, sollte E2 mit 'INIT' initialisiert werden(default))
+E3: Ein Telegram setzt den Startwert von E2 auf den Wert von E3. Muss danach wieder auf 'INIT' zurückgesetzt werden.
 A1: Messwert-Differenz (nummerisch): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Wertdifferenz, beim Beenden der Messung erfolgt keine Änderung
 A2: Zeitdifferenz (Sekunden, FLOAT): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Zeitdifferenz, beim Beenden der Messung auf die gesamte Zeitdifferenz der Messung
 A3: Letzter Differenzwert beim Stoppen oder Neustarten einer Messung (z.B. zur Archivierung)
@@ -48,13 +50,18 @@ A3: Letzter Differenzwert beim Stoppen oder Neustarten einer Messung (z.B. zur A
 function LB_LBSID($id)
 {
 	if (($E=logic_getInputs($id)) && ($V=logic_getVars($id))) {
-
+		
+		//Messwert korrigieren 
+		if (!isEmpty($V[2]) && $E[3]['refresh']==1 && $E[3]['value']!=='INIT' ) {
+			logic_setVar($id,1,$E[3]['value']);
+		}
+		
 		//Differenzen ausgeben
 		if (!isEmpty($V[2]) && $E[2]['refresh']==1 && $E[2]['value']!=='INIT' ) {
 			logic_setOutput($id,1,$E[2]['value']-$V[1]);
 			logic_setOutput($id,2,getMicrotime()-$V[2]);
 		}
-
+	
 		if ($E[1]['refresh']==1)
 		{	// neues trigger telegram
 			if ($E[1]['value']==0 && $E[1]['value']!=='INIT')
