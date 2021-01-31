@@ -112,116 +112,117 @@ function LB_LBSID($id)
 				// Last Minute(1):
 				if($E[5]['value'] == 1 && $E[6]['value'] == 1)
 				{
-					$datetime = new DateTime("now");
-					$seconds = $datetime->format('s');
-					$datetime->modify('-' . $seconds . ' seconds');
-					$datetime->modify("-1 minute");
+					$t = new DateTime("now");
+					$seconds = $t->format('s');
+					$t->modify('-' . $seconds . ' seconds');
+					$t->modify("-1 minute");
 				}
 
 				else if($E[5]['value'] == 1 && $E[6]['value'] == 2)
 				{
-					$datetime = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
-					$seconds = $datetime->format('s');
-					$datetime->modify('-' . $seconds . ' seconds');
-					$datetime->modify("-1 minute");
-					$datetime->modify("+30 seconds");
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$seconds = $t->format('s');
+					$t->modify('-' . $seconds . ' seconds');
+					$t->modify("-1 minute");
+					$t->modify("+30 seconds");
 				}
 
 				else if($E[5]['value'] == 1 && $E[6]['value'] == 3)
 				{
-					$datetime = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
-					$seconds = $datetime->format('s');
-					$datetime->modify('-' . $seconds . ' seconds');
-					$datetime->modify("-1 minute");
-					$datetime->modify("+59 seconds");
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$seconds = $t->format('s');
+					$t->modify('-' . $seconds . ' seconds');
+					$t->modify("-1 minute");
+					$t->modify("+59 seconds");
 				}
 
 				// Last Hour (2):
 				else if($E[5]['value'] == 2 && $E[6]['value'] == 1)
 				{
-					$datetime = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
-					$datetime->setTime($datetime->format('G'), 0); 
-					$datetime->modify("-1 hour");
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t->setTime($t->format('G'), 0); 
+					$t->modify("-1 hour");
 				}
 
 				else if($E[5]['value'] == 2 && $E[6]['value'] == 2)
 				{
-					$datetime = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
-					$datetime->setTime($datetime->format('G'), 30); 
-					$datetime->modify("-1 hour");
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t->setTime($t->format('G'), 30); 
+					$t->modify("-1 hour");
 				}
 
 				else if($E[5]['value'] == 2 && $E[6]['value'] == 3)
 				{
-					$datetime = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
-					$datetime->setTime($datetime->format('G'), 59); 
-					$datetime->modify("-1 hour");
-					// echo $datetime->format('Y-m-d H:i:s') . "\n";
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t->setTime($t->format('G'), 59); 
+					$t->modify("-1 hour");
+					// echo $t->format('Y-m-d H:i:s') . "\n";
 				}
 
 				// Yesterday(3):
 				else if($E[5]['value'] == 3 && $E[6]['value'] == 1)
 				{
-					$datetime = new DateTime("yesterday 00:00:00");
+					$t = new DateTime("yesterday 00:00:00");
 				}
 
 				else if($E[5]['value'] == 3 && $E[6]['value'] == 2)
 				{
-					$datetime = new DateTime("yesterday 12:00:00");
+					$t = new DateTime("yesterday 12:00:00");
 				}
 
 				else if($E[5]['value'] == 3 && $E[6]['value'] == 3)
 				{
-					$datetime = new DateTime("yesterday 23:59:00");
+					$t = new DateTime("yesterday 23:59:00");
 				}
 
 				// Last Month (4):
 				else if($E[5]['value'] == 4 && $E[6]['value'] == 1)
 				{
-					$datetime = new DateTime("first day of last month 00:00:00");
+					$t = new DateTime("first day of last month 00:00:00");
 				}
 
 				else if($E[5]['value'] == 4 && $E[6]['value'] == 2)
 				{
-					$datetime = new DateTime("first day of last month 12:00:00");
-					$datetime->modify("+14 day");
+					$t = new DateTime("first day of last month 12:00:00");
+					$t->modify("+14 day");
 				}
 
 				else if($E[5]['value'] == 4 && $E[6]['value'] == 3)
 				{
-					$datetime = new DateTime("last day of last month 23:59:00");
+					$t = new DateTime("last day of last month 23:59:00");
 				}
 
 				// Last Year (5):
 				else if($E[5]['value'] == 5 && $E[6]['value'] == 1)
 				{
-					$datetime = new DateTime("first day of last year 00:00:00");
+					$t = new DateTime("first day of last year 00:00:00");
 				}
 
 				else if($E[5]['value'] == 5 && $E[6]['value'] == 2)
 				{
-					$datetime = new DateTime("first day of last year 12:00:00");
-					$datetime->modify("+14 day");
-					$datetime->modify("+5 month");
+					$t = new DateTime("first day of last year 12:00:00");
+					$t->modify("+14 day");
+					$t->modify("+5 month");
 				}
 
 				else if($E[5]['value'] == 5 && $E[6]['value'] == 3)
 				{
-					$datetime = new DateTime("first day of last year 23:59:00");
-					$datetime->modify("+30 day");
-					$datetime->modify("+11 month");
+					$t = new DateTime("first day of last year 23:59:00");
+					$t->modify("+30 day");
+					$t->modify("+11 month");
 				}
+				$datetime = date_format($t, 'U');
 			}
 			
 			
 			$query = "INSERT INTO `archivKoData` (`datetime`, `ms`, `targetid`, `gavalue`) VALUES (FROM_UNIXTIME(" . $datetime . "), '" . $ms ."', '" . strVal($archivId) . "', '" . $value . "')";
+			logic_setOutput($id,1,$query);
 
-
 			
-			$result = sql_call($con);
+			$result = sql_call($query);
 			
 			
-			logic_setOutput($id,10,$query);
+			logic_setOutput($id,10,$result);
 		}
 	}
 }
