@@ -214,14 +214,15 @@ function LB_LBSID($id)
 				$datetime = date_format($t, 'U');
 			}
 			
-			
+			//Query vorbreiten
 			$query = "INSERT INTO `archivKoData` (`datetime`, `ms`, `targetid`, `gavalue`) VALUES (FROM_UNIXTIME(" . $datetime . "), '" . $ms ."', '" . strVal($archivId) . "', '" . $value . "')";
-			logic_setOutput($id,1,$query);
-
-			
-			$result = sql_call($query);
-			
-			
+			//Verbindung DB aufbauen
+			$mysqli = new mysqli("localhost", "root", "", "edomiLive");
+			//Daten schreiben
+			$result = mysqli_query($mysqli,$query);
+			//Verbindung DB trennen
+			mysqli_close($mysqli);
+			// Ausgang beschreiben
 			logic_setOutput($id,10,$result);
 		}
 	}
