@@ -195,21 +195,17 @@ function LB_LBSID($id)
 				// Last Year (5):
 				else if($E[5]['value'] == 5 && $E[6]['value'] == 1)
 				{
-					$t = new DateTime("first day of last year 00:00:00");
+					$t = new DateTime(date("Y")-1 . "-01-01 00:00:00");
 				}
 
 				else if($E[5]['value'] == 5 && $E[6]['value'] == 2)
 				{
-					$t = new DateTime("first day of last year 12:00:00");
-					$t->modify("+14 day");
-					$t->modify("+5 month");
+					$t = new DateTime(date("Y")-1 . "-06-15 12:00:00");
 				}
 
 				else if($E[5]['value'] == 5 && $E[6]['value'] == 3)
 				{
-					$t = new DateTime("first day of last year 23:59:00");
-					$t->modify("+30 day");
-					$t->modify("+11 month");
+					$t = new DateTime(date("Y")-1 . "-12-31 23:59:00");
 				}
 				$datetime = date_format($t, 'U');
 			}
