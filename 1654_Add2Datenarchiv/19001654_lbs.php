@@ -120,7 +120,7 @@ function LB_LBSID($id)
 
 				else if($E[5]['value'] == 1 && $E[6]['value'] == 2)
 				{
-					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); 
 					$seconds = $t->format('s');
 					$t->modify('-' . $seconds . ' seconds');
 					$t->modify("-1 minute");
@@ -129,7 +129,7 @@ function LB_LBSID($id)
 
 				else if($E[5]['value'] == 1 && $E[6]['value'] == 3)
 				{
-					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); 
 					$seconds = $t->format('s');
 					$t->modify('-' . $seconds . ' seconds');
 					$t->modify("-1 minute");
@@ -139,21 +139,21 @@ function LB_LBSID($id)
 				// Last Hour (2):
 				else if($E[5]['value'] == 2 && $E[6]['value'] == 1)
 				{
-					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); 
 					$t->setTime($t->format('G'), 0); 
 					$t->modify("-1 hour");
 				}
 
 				else if($E[5]['value'] == 2 && $E[6]['value'] == 2)
 				{
-					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); 
 					$t->setTime($t->format('G'), 30); 
 					$t->modify("-1 hour");
 				}
 
 				else if($E[5]['value'] == 2 && $E[6]['value'] == 3)
 				{
-					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); // Zeitzone nur zum Test verifizieren.
+					$t = new DateTime("now",new DateTimeZone('Europe/Zurich')); 
 					$t->setTime($t->format('G'), 59); 
 					$t->modify("-1 hour");
 					// echo $t->format('Y-m-d H:i:s') . "\n";
