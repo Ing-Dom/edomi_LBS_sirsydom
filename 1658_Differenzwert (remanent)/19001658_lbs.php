@@ -53,8 +53,13 @@ function LB_LBSID($id)
 		}
 		
 		//Differenzen ausgeben
-		if (!isEmpty($V[1]) && $E[2]['refresh']==1 && $E[2]['value']!=='INIT' ) {
-			logic_setOutput($id,1,$E[2]['value']-$V[1]);
+		if (!isEmpty($V[1]) && $E[2]['refresh']==1 && $E[2]['value']!=='INIT' ) 
+		{
+			$out = $E[2]['value']-$V[1];
+			if ($out >= 0)
+			{
+				logic_setOutput($id,1,$out);
+			}
 		}
 	
 		if ($E[1]['refresh']==1)
@@ -80,7 +85,7 @@ function LB_LBSID($id)
 					$out = $E[2]['value']-$V[1];
 					if ($out >= 0)
 					{
-						logic_setOutput($id,3,$E[2]['value']-$V[1]);
+						logic_setOutput($id,3,$out);
 					}
 				}
 				logic_setVar($id,1,$E[2]['value']);
