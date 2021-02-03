@@ -36,7 +36,7 @@ Eine Aktualisierung von A1 erfolgt nur beim Starten und Stoppen einer Messung un
 E1: Starten (&ne;0) bzw. Stoppen (=0) einer Messung (Achtung: um unerwünschte Effekte bei der Initialisierung zu unterbinden, sollte E1 mit 'INIT' initialisiert werden(default))
 E2: Messwert (nummerisch), dessen Differenz berechnet werden soll (z.B. ein Zählerstand) (Achtung: um unerwünschte Effekte bei der Initialisierung zu unterbinden, sollte E2 mit 'INIT' initialisiert werden(default))
 E3: Ein Telegram setzt den Startwert von E2 auf den Wert von E3. 
-A1: Messwert-Differenz (nummerisch): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Wertdifferenz, beim Beenden der Messung erfolgt keine Änderung
+A1: Messwert-Differenz (nummerisch): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Wertdifferenz, beim Beenden der Messung erfolgt keine Änderung (Bei negativem A1 wird kein Wert ausgegeben)
 A3: Letzter Differenzwert beim Stoppen oder Neustarten einer Messung (z.B. zur Archivierung) (Bei negativem A3 wird kein Wert ausgegeben)
 ###[/HELP]###
 
