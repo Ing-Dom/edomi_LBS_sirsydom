@@ -1,5 +1,5 @@
 ###[DEF]###
-[name		=Differenzwert (remanent) LBS 1658 V0.05	]
+[name		=Differenzwert (remanent) LBS1658 V0.10	]
 
 [e#1 TRIGGER=Trigger/Stop #init=INIT		]
 [e#2		=Messwert #init=INIT			]
@@ -38,6 +38,26 @@ E2: Messwert (nummerisch), dessen Differenz berechnet werden soll (z.B. ein Zäh
 E3: Ein Telegram setzt den Startwert von E2 auf den Wert von E3. 
 A1: Messwert-Differenz (nummerisch): wird beim Start auf 0 gesetzt, dann bei jedem eintreffenden Telegramm an E2 auf die Wertdifferenz, beim Beenden der Messung erfolgt keine Änderung (Bei negativem A1 wird kein Wert ausgegeben)
 A3: Letzter Differenzwert beim Stoppen oder Neustarten einer Messung (z.B. zur Archivierung) (Bei negativem A3 wird kein Wert ausgegeben)
+
+Versions:
+V0.10	2021-02-04	SirSydom/BigBear2nd
+
+Open Issues:
+
+
+Author:
+SirSydom - com@sirsydom.de
+Copyright (c) 2021 SirSydom
+
+Github:
+https://github.com/SirSydom/edomi_LBS_sirsydom/releases/tag/19001658_V0.10
+
+Links:
+
+
+
+Contributions:
+
 ###[/HELP]###
 
 
