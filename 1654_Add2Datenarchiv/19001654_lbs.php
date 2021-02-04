@@ -1,5 +1,5 @@
 ###[DEF]###
-[name			= Add2Datenarchiv LBS1654 V0.21		]
+[name			= Add2Datenarchiv LBS1654 V0.30		]
 
 [e#1	important	= Data								]
 [e#2	important	= Timestamp							]
@@ -12,7 +12,7 @@
 
 
 [a#1			= Error								]
-[a#10			= Debug								]
+[a#6			= Debug								]
 
 
 
@@ -31,7 +31,7 @@ E6 - PointOfTime Mode:		Modifier for E5
 
 Outputs:
 A1 - Error:					reserved
-A10 - Debug:				The SQL-Query used
+A6 - Debug:				The SQL-Query used
 
 
 This LBS inserts data into a Datenarchiv with the given timestamp or a selected PointOfTime.
@@ -52,9 +52,9 @@ Possible Options for E6:
 Versions:
 V0.10	2019-09-20	SirSydom
 V0.20	2021-01-28	SirSydom	added E5/6, used sql_call
+V0.30	2021-02-04	SirSydom	debug output to A6
 
 Open Issues:
-- A1
 
 
 Author:
@@ -62,7 +62,7 @@ SirSydom - com@sirsydom.de
 Copyright (c) 2021 SirSydom
 
 Github:
-https://github.com/SirSydom/edomi_LBS_sirsydom/releases/tag/19001654_V0.20
+https://github.com/SirSydom/edomi_LBS_sirsydom/releases/tag/19001654_V0.30
 
 Links:
 
@@ -219,7 +219,7 @@ function LB_LBSID($id)
 			//Verbindung DB trennen
 			mysqli_close($mysqli);
 			// Ausgang beschreiben
-			logic_setOutput($id,10,$result);
+			logic_setOutput($id,6,$result);
 		}
 	}
 }
